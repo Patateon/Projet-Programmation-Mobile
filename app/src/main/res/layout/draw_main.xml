@@ -18,15 +18,18 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Bouton pour afficher les options -->
-    <Button
+    <ImageButton
         android:id="@+id/buttonToggleOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Menu"
-        android:layout_marginTop="16dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/penbutton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawingView"
+        android:scaleType="fitCenter" />
+
 
     <!-- Options Layout -->
     <LinearLayout
@@ -40,23 +43,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Couleur" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/colorimage"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter" />
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonClear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Effacer" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/cleanimage"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter" />
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonToggleMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Toggle Mode" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/eraserimage"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter" />
+
 
         <com.google.android.material.slider.Slider
             android:id="@+id/sliderThickness"
