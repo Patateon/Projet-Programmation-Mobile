@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Projet-Programmation-Mobile</string>
+    <string name="create_canvas">Create canvas</string>
+    <string name="canvas_1_test">Canvas 1 test</string>
+    <string name="canvas_2_test">Canvas 2 test</string>
 </resources>

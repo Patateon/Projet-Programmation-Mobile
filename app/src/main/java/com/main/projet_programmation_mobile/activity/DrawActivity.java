@@ -1,4 +1,4 @@
-package com.main.projet_programmation_mobile;
+package com.main.projet_programmation_mobile.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.slider.Slider;
+import com.main.projet_programmation_mobile.R;
 
 public class DrawActivity extends AppCompatActivity {
 

@@ -10,11 +10,11 @@ public class DatabaseUserHelper extends SQLiteOpenHelper {
     static final int DATABASE_VERSION = 1;
     static final SQLiteDatabase.CursorFactory DATABASE_FACTORY = null;
 
-    static final String user_table = "_USERS";
-    static final String id = "_ID";
-    static final String username = "_username";
-    static final String mail = "_mail";
-    static final String password = "_password";
+    public static final String user_table = "_USERS";
+    public static final String id = "_ID";
+    public static final String username = "_username";
+    public static final String mail = "_mail";
+    public static final String password = "_password";
 
     private static final String CREATE_TABLE = "CREATE TABLE " + user_table + "(" + id + " INTEGER PRIMARY KEY AUTOINCREMENT, " + username + " TEXT, " + mail + " TEXT, " + password + " TEXT);";
 

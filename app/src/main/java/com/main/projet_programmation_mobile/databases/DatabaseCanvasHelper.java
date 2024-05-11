@@ -10,10 +10,10 @@ public class DatabaseCanvasHelper extends SQLiteOpenHelper {
     static final int DATABASE_VERSION = 1;
     static final SQLiteDatabase.CursorFactory DATABASE_FACTORY = null;
 
-    static final String canvas_table = "_CANVAS";
-    static final String id = "_ID";
-    static final String name = "_name";
-    static final String data = "_data";
+    public static final String canvas_table = "_CANVAS";
+    public static final String id = "_ID";
+    public static final String name = "_name";
+    public static final String data = "_data";
 
     private static final String CREATE_CANVAS_TABLE = "CREATE TABLE " + canvas_table + "(" + id + " INTEGER PRIMARY KEY AUTOINCREMENT, " + name + " TEXT, " + data + " BLOB);";
     public DatabaseCanvasHelper(Context context) {

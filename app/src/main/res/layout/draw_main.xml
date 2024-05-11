@@ -5,10 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DrawActivity">
+    tools:context=".activity.DrawActivity">
 
     <!-- DrawingView -->
-    <com.main.projet_programmation_mobile.DrawingView
+    <com.main.projet_programmation_mobile.activity.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
         android:layout_height="0dp"
