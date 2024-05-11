@@ -4,23 +4,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.slider.Slider;
 
 public class DrawActivity extends AppCompatActivity {
 
     private DrawingView drawingView;
-    private Button buttonColor;
-    private Button buttonClear;
-
-    private Button buttonToggleMode;
-
-    private Button buttonThickness;
+    private Button buttonToggleOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +22,24 @@ public class DrawActivity extends AppCompatActivity {
         setContentView(R.layout.draw_main);
 
         drawingView = findViewById(R.id.drawingView);
-        buttonColor = findViewById(R.id.buttonColor);
-        buttonClear = findViewById(R.id.buttonClear);
-        buttonToggleMode = findViewById(R.id.buttonToggleMode);
-        Slider sliderThickness = findViewById(R.id.sliderThickness);
+        buttonToggleOptions = findViewById(R.id.buttonToggleOptions);
+        LinearLayout optionsLayout = findViewById(R.id.optionsLayout);
 
+        buttonToggleOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (optionsLayout.getVisibility() == View.VISIBLE) {
+                    optionsLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    optionsLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        Button buttonColor = findViewById(R.id.buttonColor);
+        Button buttonClear = findViewById(R.id.buttonClear);
+        Button buttonToggleMode = findViewById(R.id.buttonToggleMode);
+        Slider sliderThickness = findViewById(R.id.sliderThickness);
 
         buttonColor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +70,7 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
     }
+
     private void openColorPickerDialog() {
         final AlertDialog.Builder colorPickerDialog = new AlertDialog.Builder(this);
         colorPickerDialog.setTitle("Choisir une couleur");
@@ -76,6 +84,7 @@ public class DrawActivity extends AppCompatActivity {
 
         colorPickerDialog.show();
     }
+
     private void openThicknessPickerDialog() {
         final AlertDialog.Builder thicknessPickerDialog = new AlertDialog.Builder(this);
         thicknessPickerDialog.setTitle("Choisir une épaisseur");
@@ -91,4 +100,3 @@ public class DrawActivity extends AppCompatActivity {
         thicknessPickerDialog.show();
     }
 }
-
