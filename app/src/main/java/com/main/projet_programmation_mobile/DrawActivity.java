@@ -85,18 +85,5 @@ public class DrawActivity extends AppCompatActivity {
         colorPickerDialog.show();
     }
 
-    private void openThicknessPickerDialog() {
-        final AlertDialog.Builder thicknessPickerDialog = new AlertDialog.Builder(this);
-        thicknessPickerDialog.setTitle("Choisir une épaisseur");
 
-        final String[] thicknessOptions = {"1", "3", "5", "8", "10"}; // Options d'épaisseur disponibles
-        final float[] thicknessValues = {1f, 3f, 5f, 8f, 10f}; // Valeurs d'épaisseur correspondantes
-
-        thicknessPickerDialog.setItems(thicknessOptions, (dialog, which) -> {
-            float selectedThickness = thicknessValues[which];
-            drawingView.setThickness(selectedThickness);
-        });
-
-        thicknessPickerDialog.show();
-    }
 }
