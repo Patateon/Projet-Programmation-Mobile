@@ -3,7 +3,7 @@ package com.main.projet_programmation_mobile;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
@@ -14,7 +14,7 @@ import com.google.android.material.slider.Slider;
 public class DrawActivity extends AppCompatActivity {
 
     private DrawingView drawingView;
-    private Button buttonToggleOptions;
+    private ImageButton buttonToggleOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,9 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonColor = findViewById(R.id.buttonColor);
-        Button buttonClear = findViewById(R.id.buttonClear);
-        Button buttonToggleMode = findViewById(R.id.buttonToggleMode);
+        ImageButton buttonColor = findViewById(R.id.buttonColor);
+        ImageButton buttonClear = findViewById(R.id.buttonClear);
+        ImageButton buttonToggleMode = findViewById(R.id.buttonToggleMode);
         Slider sliderThickness = findViewById(R.id.sliderThickness);
 
         buttonColor.setOnClickListener(new View.OnClickListener() {
@@ -85,18 +85,5 @@ public class DrawActivity extends AppCompatActivity {
         colorPickerDialog.show();
     }
 
-    private void openThicknessPickerDialog() {
-        final AlertDialog.Builder thicknessPickerDialog = new AlertDialog.Builder(this);
-        thicknessPickerDialog.setTitle("Choisir une épaisseur");
 
-        final String[] thicknessOptions = {"1", "3", "5", "8", "10"}; // Options d'épaisseur disponibles
-        final float[] thicknessValues = {1f, 3f, 5f, 8f, 10f}; // Valeurs d'épaisseur correspondantes
-
-        thicknessPickerDialog.setItems(thicknessOptions, (dialog, which) -> {
-            float selectedThickness = thicknessValues[which];
-            drawingView.setThickness(selectedThickness);
-        });
-
-        thicknessPickerDialog.show();
-    }
 }
