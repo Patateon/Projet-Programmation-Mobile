@@ -43,4 +43,16 @@ public class DatabaseUserManager {
         }
         return cursor;
     }
+
+    public int update(long _id, String username, String mail, String password){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseUserHelper.username, username);
+        values.put(DatabaseUserHelper.mail, mail);
+        values.put(DatabaseUserHelper.password, password);
+        return database.update(DatabaseUserHelper.user_table, values, DatabaseUserHelper.id + " = " + _id, null);
+    }
+
+    public int delete(long _id){
+        return database.delete(DatabaseUserHelper.user_table, DatabaseUserHelper.id + " = " + _id, null);
+    }
 }

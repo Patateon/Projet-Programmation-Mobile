@@ -45,4 +45,8 @@ public class DatabaseCanvasManager {
         values.put(DatabaseCanvasHelper.data, data);
         return database.update(DatabaseCanvasHelper.canvas_table, values, DatabaseCanvasHelper.id + " = " + _id, null);
     }
+
+    public int delete(long _id) {
+        return database.delete(DatabaseCanvasHelper.canvas_table, DatabaseCanvasHelper.id + " = " + _id, null);
+    }
 }
