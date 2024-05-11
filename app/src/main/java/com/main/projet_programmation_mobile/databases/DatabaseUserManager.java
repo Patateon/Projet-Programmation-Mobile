@@ -44,6 +44,34 @@ public class DatabaseUserManager {
         return cursor;
     }
 
+    public Cursor fetch(long _id) {
+        String [] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
+        return database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.id + " = " + _id, null, null, null, null);
+    }
+
+    public Cursor fetch(String mail){
+        String [] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
+        return database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = " + mail, null, null, null, null);
+    }
+
+    public int updateUsername(long _id, String username){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseUserHelper.username, username);
+        return database.update(DatabaseUserHelper.user_table, values, DatabaseUserHelper.id + " = " + _id, null);
+    }
+
+    public int updateMail(long _id, String mail){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseUserHelper.mail, mail);
+        return database.update(DatabaseUserHelper.user_table, values, DatabaseUserHelper.id + " = " + _id, null);
+    }
+
+    public int updatePassword(long _id, String password){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseUserHelper.password, password);
+        return database.update(DatabaseUserHelper.user_table, values, DatabaseUserHelper.id + " = " + _id, null);
+    }
+
     public int update(long _id, String username, String mail, String password){
         ContentValues values = new ContentValues();
         values.put(DatabaseUserHelper.username, username);

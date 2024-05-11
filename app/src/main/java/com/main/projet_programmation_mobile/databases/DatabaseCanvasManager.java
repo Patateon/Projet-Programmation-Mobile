@@ -38,6 +38,17 @@ public class DatabaseCanvasManager {
         }
         return cursor;
     }
+    public int update(long _id, String name) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseCanvasHelper.name, name);
+        return database.update(DatabaseCanvasHelper.canvas_table, values, DatabaseCanvasHelper.id + " = " + _id, null);
+    }
+
+    public int update(long _id, byte[] data) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseCanvasHelper.data, data);
+        return database.update(DatabaseCanvasHelper.canvas_table, values, DatabaseCanvasHelper.id + " = " + _id, null);
+    }
 
     public int update(long _id, String name, byte[] data) {
         ContentValues values = new ContentValues();
