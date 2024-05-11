@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
+import yuku.ambilwarna.AmbilWarnaDialog;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +15,7 @@ public class DrawActivity extends AppCompatActivity {
 
     private DrawingView drawingView;
     private ImageButton buttonToggleOptions;
-
+    private int currentColor = Color.BLACK; // Définissez une couleur par défaut
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,16 +72,22 @@ public class DrawActivity extends AppCompatActivity {
     }
 
     private void openColorPickerDialog() {
-        final AlertDialog.Builder colorPickerDialog = new AlertDialog.Builder(this);
-        colorPickerDialog.setTitle("Choisir une couleur");
-        final String[] colors = {"Noir", "Rouge", "Vert", "Bleu", "Jaune", "Cyan", "Magenta", "Gris"}; // Liste des couleurs disponibles
-        final int[] colorValues = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.GRAY}; // Valeurs de couleur correspondantes
+        // Initialiser une nouvelle boîte de dialogue de sélection de couleur
+        AmbilWarnaDialog colorPickerDialog = new AmbilWarnaDialog(this, currentColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                // Mettre à jour la couleur actuelle avec la couleur sélectionnée
+                currentColor = color;
+                // Mettre à jour la couleur du dessin
+                drawingView.setColor(currentColor);
+            }
 
-        colorPickerDialog.setItems(colors, (dialog, which) -> {
-            int selectedColor = colorValues[which];
-            drawingView.setColor(selectedColor);
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                // Ne rien faire si l'utilisateur annule la sélection de couleur
+            }
         });
-
+        // Afficher la boîte de dialogue de sélection de couleur
         colorPickerDialog.show();
     }
 
