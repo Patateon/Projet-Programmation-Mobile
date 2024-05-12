@@ -73,22 +73,17 @@ public class DrawActivity extends AppCompatActivity {
     }
 
     private void openColorPickerDialog() {
-        // Initialiser une nouvelle boîte de dialogue de sélection de couleur
         AmbilWarnaDialog colorPickerDialog = new AmbilWarnaDialog(this, currentColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
-                // Mettre à jour la couleur actuelle avec la couleur sélectionnée
                 currentColor = color;
-                // Mettre à jour la couleur du dessin
                 drawingView.setColor(currentColor);
             }
 
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
-                // Ne rien faire si l'utilisateur annule la sélection de couleur
             }
         });
-        // Afficher la boîte de dialogue de sélection de couleur
         colorPickerDialog.show();
     }
 

@@ -10,18 +10,18 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawingView extends View {
-    private float currentThickness = 5f; // Épaisseur du trait par défaut
+    private float currentThickness = 5f;
     private Paint paint;
     private Canvas canvas;
     private Bitmap bitmap;
 
     private float startX, startY, endX, endY;
-    private int currentColor = Color.BLACK; // Couleur du trait par défaut
+    private int currentColor = Color.BLACK;
 
-    private Path drawPath; // Le chemin de dessin
-    private Paint drawPaint; // Le pinceau de dessin
+    private Path drawPath;
+    private Paint drawPaint;
 
-    private boolean isErasing = false; // Variable pour suivre l'état actuel (dessin ou effacement)
+    private boolean isErasing = false;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,7 +30,7 @@ public class DrawingView extends View {
 
     private void setupPaint() {
         drawPaint = new Paint();
-        drawPaint.setColor(currentColor); // Couleur du trait
+        drawPaint.setColor(currentColor);
         drawPaint.setAntiAlias(true);
         drawPaint.setStrokeWidth(5);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -90,27 +90,27 @@ public class DrawingView extends View {
     }
 
     private void erasePath(float x, float y) {
-        float eraseRadius = 30; // Définissez le rayon de l'effacement selon vos besoins
+        float eraseRadius = 30;
         Paint erasePaint = new Paint();
-        erasePaint.setColor(Color.WHITE); // Couleur utilisée pour effacer (fond blanc)
+        erasePaint.setColor(Color.WHITE);
         canvas.drawCircle(x, y, eraseRadius, erasePaint);
         invalidate();
     }
 
 
-    // Méthode pour changer la couleur du trait
+
     public void setColor(int color) {
         currentColor = color;
         drawPaint.setColor(currentColor);
     }
 
-    // Méthode pour effacer le dessin
+
     public void clearDrawing() {
         canvas.drawColor(Color.WHITE);
         invalidate();
     }
 
-    // Méthode pour basculer entre le dessin et l'effacement
+
     public void toggleDrawingMode() {
         isErasing = !isErasing;
     }
