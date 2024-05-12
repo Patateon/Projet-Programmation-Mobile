@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMenuActivity">
+    tools:context=".activity.MainMenuActivity">
 
     <LinearLayout
         android:layout_width="409dp"
@@ -21,34 +21,36 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="335dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/create_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
         </LinearLayout>
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/setting_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="@string/create_canvas"
+            tools:ignore="VisualLintButtonSize" />
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/linearLayout_canvas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Button" />
             </LinearLayout>
         </ScrollView>
 

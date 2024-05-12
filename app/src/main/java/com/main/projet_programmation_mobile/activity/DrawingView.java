@@ -1,4 +1,4 @@
-package com.main.projet_programmation_mobile;
+package com.main.projet_programmation_mobile.activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

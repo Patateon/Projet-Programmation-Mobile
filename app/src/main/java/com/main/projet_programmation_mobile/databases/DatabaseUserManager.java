@@ -46,12 +46,20 @@ public class DatabaseUserManager {
 
     public Cursor fetch(long _id) {
         String [] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
-        return database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.id + " = " + _id, null, null, null, null);
+        Cursor cursor = database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.id + " = " + _id, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
     public Cursor fetch(String mail){
         String [] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
-        return database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = " + mail, null, null, null, null);
+        Cursor cursor = database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = " + mail, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
     public int updateUsername(long _id, String username){

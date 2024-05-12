@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.sql.SQLDataException;
+
 public class DatabaseCanvasManager {
     private DatabaseCanvasHelper dbHelper;
     private Context context;
@@ -14,7 +16,7 @@ public class DatabaseCanvasManager {
         this.context = context;
     }
 
-    public DatabaseCanvasManager open() {
+    public DatabaseCanvasManager open() throws SQLDataException {
         dbHelper = new DatabaseCanvasHelper(context);
         database = dbHelper.getWritableDatabase();
         return this;
@@ -38,6 +40,15 @@ public class DatabaseCanvasManager {
         }
         return cursor;
     }
+
+    public Cursor fetch(String name){
+        Cursor cursor = database.rawQuery("SELECT * FROM DatabaseCanvasHelper.canvas_table WHERE DatabaseCanvasHelper.name LIKE ?", new String[]{"%" + name + "%"});
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
     public int update(long _id, String name) {
         ContentValues values = new ContentValues();
         values.put(DatabaseCanvasHelper.name, name);

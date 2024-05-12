@@ -1,4 +1,4 @@
-package com.main.projet_programmation_mobile.databases;
+package com.main.projet_programmation_mobile.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
