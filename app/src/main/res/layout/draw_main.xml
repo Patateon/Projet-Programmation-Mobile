@@ -23,18 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarSecondOptions"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_button"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.main.projet_programmation_mobile.activity.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
@@ -120,30 +108,34 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/toolbarSecondOptionsContent"
+        android:id="@+id/toolbarSecondOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="19dp"
-        android:minHeight="?attr/actionBarSize"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonSecondOptions">
 
         <ImageButton
             android:id="@+id/buttonSquareShape"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/buttonSquareShape"
-            android:src="@drawable/squareimage"
-            android:visibility="visible" />
+            android:src="@drawable/square"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
 
         <ImageButton
             android:id="@+id/buttonCircleShape"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/buttonCircleShape"
-            android:src="@drawable/circleimage" />
+            android:src="@drawable/circle"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
 
     </LinearLayout>
 
@@ -154,7 +146,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:adjustViewBounds="true"
-        android:backgroundTint="@color/white"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/second_options"
         android:scaleType="fitCenter"
         android:src="@drawable/dollarimage"
