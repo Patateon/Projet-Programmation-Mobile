@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "135909647098",
+    "project_id": "application-dessin-hai811i",
+    "storage_bucket": "application-dessin-hai811i.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135909647098:android:8853d81dcefece26259f43",
+        "android_client_info": {
+          "package_name": "com.main.projet_programmation_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9c0kAQPXdoGu8PdBXF3kSPbESAvJ7JRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
