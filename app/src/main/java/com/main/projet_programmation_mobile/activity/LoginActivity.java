@@ -1,5 +1,8 @@
 package com.main.projet_programmation_mobile.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.main.projet_programmation_mobile.R;
 import com.main.projet_programmation_mobile.databases.DatabaseUserManager;
 
+import java.sql.SQLDataException;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextMail;
@@ -23,72 +28,76 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialisation des vues
         editTextMail = findViewById(R.id.editTextMail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("Range")
             @Override
             public void onClick(View v) {
-                // Récupération des données saisies par l'utilisateur
                 String mail = editTextMail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
-                DatabaseUserManager dbManager = null;
+                if (mail.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Veuillez saisir un identifiant et un mot de passe", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                DatabaseUserManager dbManager = new DatabaseUserManager(LoginActivity.this);
                 try {
                     dbManager.open();
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                Cursor cursor = dbManager.fetch(mail);
+                    Cursor cursor = dbManager.fetch(mail);
 
-                String fetchedUsername = "";
-                String fetchedMail = "";
-                String fetchedPassword = "";
+                    if (cursor != null && cursor.moveToFirst()) {
+                        String fetchedPassword = cursor.getString(cursor.getColumnIndex("password"));
 
-                boolean mailExist = false;
+                        if (password.equals(fetchedPassword)) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("is_logged_in", true);
+                            editor.putString("user_email", mail);
+                            editor.putString("user_username", cursor.getString(cursor.getColumnIndex("username")));
+                            editor.apply();
 
-                if (cursor != null && cursor.moveToFirst()) {
-                    fetchedUsername = cursor.getString(1);
-                    fetchedMail = cursor.getString(2);
-                    fetchedPassword = cursor.getString(3);
-                    mailExist = true;
+                            Toast.makeText(LoginActivity.this, "Connexion réussie pour l'utilisateur : " + mail, Toast.LENGTH_SHORT).show();
+                            cursor.close();
+                            dbManager.close();
 
-                    cursor.close();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Aucun compte avec l'adresse : " + mail, Toast.LENGTH_SHORT).show();
-                }
-
-                // Vérification des données de connexion
-
-                if (!mail.isEmpty() && !password.isEmpty() && mailExist) {
-                    if(mail == fetchedMail && password == fetchedPassword){
-                        //Connexion
-                    }else{
-                        Toast.makeText(LoginActivity.this, "Combinaison mail / mot de passe incorrecte : ", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Combinaison mail / mot de passe incorrecte", Toast.LENGTH_SHORT).show();
+                            cursor.close();
+                            dbManager.close();
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Aucun compte avec l'adresse : " + mail, Toast.LENGTH_SHORT).show();
+                        if (cursor != null) {
+                            cursor.close();
+                        }
+                        dbManager.close();
                     }
 
-                    Toast.makeText(LoginActivity.this, "Connexion réussie pour l'utilisateur : " + mail, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Veuillez saisir un identifiant et un mot de passe", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    dbManager.close();
                 }
             }
         });
 
+        // Gestion du clic sur le bouton d'inscription
         Button buttonSignUp = findViewById(R.id.buttonSignUp);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //A completer une fois la vue SignUpActivity
-                //Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                //startActivity(intent);
+                // Redirection vers la vue d'inscription
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
             }
         });
-
     }
 }
-
