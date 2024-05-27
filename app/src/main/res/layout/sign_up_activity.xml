@@ -1,49 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white_background">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/titleLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Création de compte"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/editTextUsername"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="textPersonName" />
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
 
-        <EditText
-            android:id="@+id/editTextMail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
+            <ImageButton
+                android:id="@+id/home_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/settings_image_button"
+                android:scaleType="fitCenter"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:src="@drawable/home" />
 
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonSignUp"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/titleLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Création de compte"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                style="@style/TextViewStyle"/>
+
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                style="@style/EditTextStyle"/>
+
+            <EditText
+                android:id="@+id/editTextMail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                style="@style/EditTextStyle"/>
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                style="@style/EditTextStyle"/>
+
+            <Button
+                android:id="@+id/buttonSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Créer le compte"
+                android:backgroundTint="@color/blue_button"
+                android:textColor="@color/black_text"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,14 +55,14 @@ public class SignUpActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
 
-//                Cursor cursor = dbManager.fetch(mail);
-//
-//                if (cursor != null && cursor.moveToFirst()) {
-//                    Toast.makeText(SignUpActivity.this, "L'adresse email est déjà utilisée", Toast.LENGTH_SHORT).show();
-//                    cursor.close();
-//                    dbManager.close();
-//                    return;
-//                }
+                Cursor cursor = dbManager.fetch(mail);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    Toast.makeText(SignUpActivity.this, "L'adresse "+ mail + " est déjà utilisée", Toast.LENGTH_SHORT).show();
+                    cursor.close();
+                    dbManager.close();
+                    return;
+                }
 
                 dbManager.insert(username, mail, password);
                 dbManager.close();
@@ -73,6 +74,13 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+
+        // bouton home
+        ImageButton homeButton = (ImageButton) findViewById(R.id.home_button);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
         });
     }
 }
