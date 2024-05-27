@@ -52,8 +52,8 @@ public class DatabaseUserManager {
     }
 
     public Cursor fetch(String mail){
-        String [] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
-        Cursor cursor = database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = " + mail, null, null, null, null);
+        String[] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
+        Cursor cursor = database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = ?", new String[] {mail}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }

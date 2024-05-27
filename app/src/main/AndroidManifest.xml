@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ProjetProgrammationMobile"
         tools:targetApi="31">
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
@@ -34,6 +34,18 @@
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:exported="true"
+            android:label="SignUpActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:exported="true"
+            android:label="UserInfoActivity">
         </activity>
     </application>
 

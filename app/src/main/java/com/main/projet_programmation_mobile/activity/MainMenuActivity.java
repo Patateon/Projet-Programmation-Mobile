@@ -3,6 +3,7 @@ package com.main.projet_programmation_mobile.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -60,12 +61,18 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
         // Load a button for each canvas in the database
         loadCanvas();
 
-        // Handle setting button
-        ImageButton settingButton = (ImageButton) findViewById(R.id.setting_button);
-        settingButton.setOnClickListener(v -> {
-            // Open settings activity or perform any other action
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+        // Handle login button
+        ImageButton loginButton = (ImageButton) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+            if (isLoggedIn) {
+                Intent intent = new Intent(MainMenuActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Handle create button
