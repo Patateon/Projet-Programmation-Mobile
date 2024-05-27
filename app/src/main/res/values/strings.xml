@@ -24,4 +24,8 @@
     <string name="cleanbutton">cleanButton</string>
     <string name="colorpicker">colorPicker</string>
     <string name="rubberbutton">rubberButton</string>
+    <string name="fillbutton">fillButton</string>
+    <string name="second_options">rightoptions</string>
+    <string name="buttonSquareShape">SquareShape</string>
+    <string name="buttonCircleShape">CircleShape</string>
 </resources>

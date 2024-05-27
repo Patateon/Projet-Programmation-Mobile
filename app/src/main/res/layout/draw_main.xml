@@ -7,7 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".activity.DrawActivity">
 
+    <!-- DrawingView -->
+
     <!-- Bouton pour afficher les options -->
+
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -19,7 +23,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- DrawingView -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarSecondOptions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_button"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.main.projet_programmation_mobile.activity.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
@@ -63,7 +78,7 @@
             android:layout_height="48dp"
             android:src="@drawable/colorimage"
             android:contentDescription="@string/colorpicker"
-            android:background="@android:color/transparent"
+            android:background="@drawable/fill_button_background_selector"
             android:scaleType="fitCenter" />
 
         <ImageButton
@@ -81,9 +96,17 @@
             android:layout_height="48dp"
             android:src="@drawable/eraserimage"
             android:contentDescription="@string/rubberbutton"
-            android:background="@android:color/transparent"
+            android:background="@drawable/fill_button_background_selector"
             android:scaleType="fitCenter" />
 
+        <ImageButton
+            android:id="@+id/buttonFill"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/rempimage"
+            android:contentDescription="@string/fillbutton"
+            android:background="@drawable/fill_button_background_selector"
+            android:scaleType="fitCenter" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/sliderThickness"
@@ -95,5 +118,49 @@
             android:value="5" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/toolbarSecondOptionsContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="19dp"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonSecondOptions">
+
+        <ImageButton
+            android:id="@+id/buttonSquareShape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/buttonSquareShape"
+            android:src="@drawable/squareimage"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/buttonCircleShape"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/buttonCircleShape"
+            android:src="@drawable/circleimage" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/buttonSecondOptions"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/white"
+        android:contentDescription="@string/second_options"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dollarimage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

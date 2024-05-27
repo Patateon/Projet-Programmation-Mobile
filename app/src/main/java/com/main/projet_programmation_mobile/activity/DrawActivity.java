@@ -18,6 +18,12 @@ public class DrawActivity extends AppCompatActivity {
 
     private DrawingView drawingView;
     private ImageButton buttonToggleOptions;
+
+    private ImageButton buttonFill;
+    private ImageButton buttonToggleMode;
+
+    private ImageButton buttonColor;
+
     private int currentColor = Color.BLACK; // Définissez une couleur par défaut
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +49,17 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton buttonColor = findViewById(R.id.buttonColor);
         ImageButton buttonClear = findViewById(R.id.buttonClear);
-        ImageButton buttonToggleMode = findViewById(R.id.buttonToggleMode);
+        buttonToggleMode = findViewById(R.id.buttonToggleMode); // Initialisez buttonToggleMode ici
+        buttonFill = findViewById(R.id.buttonFill);
+        buttonColor = findViewById(R.id.buttonColor);
         Slider sliderThickness = findViewById(R.id.sliderThickness);
 
         buttonColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openColorPickerDialog();
+                updateButtonStates();
             }
         });
 
@@ -66,7 +74,20 @@ public class DrawActivity extends AppCompatActivity {
         buttonToggleMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean newState = !buttonToggleMode.isSelected();
+                buttonToggleMode.setSelected(newState);
                 drawingView.toggleDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonFill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean newState = !buttonFill.isSelected();
+                buttonFill.setSelected(newState);
+                drawingView.toggleFillMode();
+                updateButtonStates();
             }
         });
 
@@ -91,6 +112,13 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
         colorPickerDialog.show();
+    }
+
+    private void updateButtonStates() {
+        buttonFill.setSelected(drawingView.isFilling());
+        buttonToggleMode.setSelected(drawingView.isErasing());
+        buttonColor.setSelected(drawingView.isDrawing());
+
     }
 
 
