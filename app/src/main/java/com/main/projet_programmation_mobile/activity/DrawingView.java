@@ -119,6 +119,10 @@ public class DrawingView extends View {
         currentThickness = thickness;
         drawPaint.setStrokeWidth(thickness);
     }
+
+    public boolean isErasing() {
+        return isErasing;
+    }
 }
 
 

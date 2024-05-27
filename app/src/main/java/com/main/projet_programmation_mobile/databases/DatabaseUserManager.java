@@ -9,18 +9,16 @@ import java.sql.SQLDataException;
 
 public class DatabaseUserManager {
     private DatabaseUserHelper dbHelper;
-    private Context context;
+    private final Context context;
     private SQLiteDatabase database;
 
-    public DatabaseUserManager(DatabaseUserHelper dbHelper, Context context) {
-        this.dbHelper = dbHelper;
+    public DatabaseUserManager(Context context){
         this.context = context;
     }
 
-    public DatabaseUserManager open() throws SQLDataException {
+    public void open() throws SQLDataException {
         dbHelper = new DatabaseUserHelper(context);
         database = dbHelper.getWritableDatabase();
-        return this;
     }
 
     public void close() {

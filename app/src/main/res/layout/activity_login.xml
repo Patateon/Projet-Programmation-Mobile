@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white_background">
 
     <EditText
         android:id="@+id/editTextMail"
@@ -10,8 +11,11 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="250dp"
         android:layout_marginEnd="30dp"
-        android:hint="Mail"
-        android:inputType="text" />
+        android:autofillHints=""
+        android:hint="@string/identifiant"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColorHint="#37474F" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -21,8 +25,11 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="30dp"
-        android:hint="Mot de passe"
-        android:inputType="textPassword" />
+        android:autofillHints=""
+        android:hint="@string/mot_de_passe"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textColorHint="#37474F" />
 
 
     <Button
@@ -33,7 +40,9 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="49dp"
         android:layout_marginEnd="30dp"
-        android:text="Se connecter" />
+        android:backgroundTint="@color/blue_button"
+        android:text="@string/se_connecter"
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/buttonSignUp"
@@ -42,6 +51,8 @@
         android:layout_below="@id/buttonLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Créer un compte" />
+        android:backgroundTint="@color/blue_button"
+        android:text="@string/cr_er_un_compte"
+        android:textColor="#000000" />
 
 </RelativeLayout>

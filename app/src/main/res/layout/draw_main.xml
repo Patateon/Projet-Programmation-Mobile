@@ -82,6 +82,7 @@
             android:src="@drawable/eraserimage"
             android:contentDescription="@string/rubberbutton"
             android:background="@android:color/transparent"
+            android:backgroundTint="@color/white"
             android:scaleType="fitCenter" />
 
 

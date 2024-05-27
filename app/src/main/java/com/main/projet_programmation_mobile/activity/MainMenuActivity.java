@@ -17,6 +17,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.main.projet_programmation_mobile.R;
 import com.main.projet_programmation_mobile.databases.DatabaseCanvasHelper;
 import com.main.projet_programmation_mobile.databases.DatabaseCanvasManager;
+import com.main.projet_programmation_mobile.databases.DatabaseUserManager;
+
+import java.sql.SQLDataException;
 
 public class MainMenuActivity  extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
@@ -39,8 +42,13 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
             e.printStackTrace();
         }
 
-        byte[] test = new byte[0];
-        databaseCanvasManager.insert("test", test);
+        try {
+            databaseCanvasManager.open();
+        } catch (SQLDataException e) {
+            throw new RuntimeException(e);
+        }
+
+        databaseCanvasManager.insert("Test canvas", "test".getBytes());
 
 //        SearchView searchView = findViewById(R.id.searchView);
 //        searchView.setOnQueryTextListener(this);
@@ -62,6 +70,12 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
             Intent intent = new Intent(this, DrawActivity.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        databaseCanvasManager.close();
+        super.onDestroy();
     }
 
     @Override
