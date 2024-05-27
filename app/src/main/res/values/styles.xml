@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textCursorDrawable">@color/black_text</item>
+        <item name="android:textColorHint">@color/grey_text_hint</item>
+        <item name="android:backgroundTint">@color/black_text</item>
+    </style>
+
+    <style name="TextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/black_text</item>
+    </style>
+</resources>
