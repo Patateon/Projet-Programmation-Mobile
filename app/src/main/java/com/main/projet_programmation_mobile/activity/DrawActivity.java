@@ -23,7 +23,10 @@ public class DrawActivity extends AppCompatActivity {
     private ImageButton buttonToggleMode;
 
     private ImageButton buttonColor;
-
+    private ImageButton buttonSecondOptions;
+    private LinearLayout toolbarSecondOptions;
+    private ImageButton buttonSquareShape;
+    private ImageButton buttonCircleShape;
     private int currentColor = Color.BLACK; // Définissez une couleur par défaut
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,41 @@ public class DrawActivity extends AppCompatActivity {
                 drawingView.setThickness(value);
             }
         });
+
+
+        buttonSecondOptions = findViewById(R.id.buttonSecondOptions);
+        toolbarSecondOptions = findViewById(R.id.toolbarSecondOptions);
+
+
+        buttonSecondOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
+                    toolbarSecondOptions.setVisibility(View.INVISIBLE);
+                } else {
+                    toolbarSecondOptions.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        buttonSquareShape = findViewById(R.id.buttonSquareShape);
+        buttonSquareShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleSquareDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonCircleShape = findViewById(R.id.buttonCircleShape);
+        buttonCircleShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleCircleDrawingMode();
+                updateButtonStates();
+            }
+        });
+
     }
 
     private void openColorPickerDialog() {
@@ -118,7 +156,8 @@ public class DrawActivity extends AppCompatActivity {
         buttonFill.setSelected(drawingView.isFilling());
         buttonToggleMode.setSelected(drawingView.isErasing());
         buttonColor.setSelected(drawingView.isDrawing());
-
+        buttonSquareShape.setSelected(drawingView.isDrawingSquare());
+        buttonCircleShape.setSelected(drawingView.isDrawingCircle());
     }
 
 
