@@ -55,11 +55,10 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
         scrollView = findViewById(R.id.scrollView);
 
 
-        // Handle setting button
-        ImageButton settingButton = (ImageButton) findViewById(R.id.setting_button);
-        settingButton.setOnClickListener(v -> {
-            // Open settings activity or perform any other action
-            Intent intent = new Intent(this, SettingsActivity.class);
+        // Handle login button
+        ImageButton loginButton = (ImageButton) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
 

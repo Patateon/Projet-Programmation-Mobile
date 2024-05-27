@@ -1,16 +1,15 @@
-package com.main.projet_programmation_mobile;
+package com.main.projet_programmation_mobile.activity;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.main.projet_programmation_mobile.R;
 import com.main.projet_programmation_mobile.databases.DatabaseUserManager;
 
 public class LoginActivity extends AppCompatActivity {

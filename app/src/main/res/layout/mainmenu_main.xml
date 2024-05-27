@@ -28,7 +28,7 @@
                 android:layout_height="match_parent" />
 
             <ImageButton
-                android:id="@+id/setting_button"
+                android:id="@+id/login_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -37,7 +37,7 @@
                 android:scaleType="fitCenter"
                 android:scaleX="0.9"
                 android:scaleY="0.9"
-                android:src="@drawable/setting"
+                android:src="@drawable/login"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
