@@ -1,6 +1,7 @@
 package com.main.projet_programmation_mobile.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
@@ -58,8 +59,15 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
         // Handle login button
         ImageButton loginButton = (ImageButton) findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+            if (isLoggedIn) {
+                Intent intent = new Intent(MainMenuActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(MainMenuActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Handle create button
