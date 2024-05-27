@@ -35,6 +35,18 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
+
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:exported="true"
+            android:label="SignUpActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:exported="true"
+            android:label="UserInfoActivity">
+        </activity>
     </application>
 
 </manifest>
