@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.main.projet_programmation_mobile.R;
 import com.main.projet_programmation_mobile.databases.DatabaseUserManager;
+import com.main.projet_programmation_mobile.databases.DatabaseUserHelper;
 
 import java.sql.SQLDataException;
 
@@ -33,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("Range")
             @Override
             public void onClick(View v) {
                 String mail = editTextMail.getText().toString().trim();
@@ -51,17 +52,22 @@ public class LoginActivity extends AppCompatActivity {
                     Cursor cursor = dbManager.fetch(mail);
 
                     if (cursor != null && cursor.moveToFirst()) {
-                        String fetchedPassword = cursor.getString(cursor.getColumnIndex("password"));
+                        @SuppressLint("Range")
+                        String fetchedPassword = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseUserHelper.password));
+                        @SuppressLint("Range")
+                        String fetchedMail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseUserHelper.mail));
+                        @SuppressLint("Range")
+                        String fetchedUsername = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseUserHelper.username));
 
                         if (password.equals(fetchedPassword)) {
                             SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean("is_logged_in", true);
-                            editor.putString("user_email", mail);
-                            editor.putString("user_username", cursor.getString(cursor.getColumnIndex("username")));
+                            editor.putString("user_email", fetchedMail);
+                            editor.putString("user_username", fetchedUsername);
                             editor.apply();
 
-                            Toast.makeText(LoginActivity.this, "Connexion réussie pour l'utilisateur : " + mail, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Connexion réussie pour l'utilisateur : " + fetchedMail, Toast.LENGTH_SHORT).show();
                             cursor.close();
                             dbManager.close();
 
@@ -80,11 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         dbManager.close();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    dbManager.close();
+                } catch (SQLDataException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -98,6 +101,13 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
+        });
+
+        // bouton home
+        ImageButton homeButton = (ImageButton) findViewById(R.id.home_button);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
         });
     }
 }
