@@ -1,9 +1,7 @@
 package com.main.projet_programmation_mobile.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,24 +9,30 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.main.projet_programmation_mobile.R;
-import com.main.projet_programmation_mobile.databases.DatabaseUserManager;
-import com.main.projet_programmation_mobile.databases.DatabaseUserHelper;
-
-import java.sql.SQLDataException;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextMail;
     private EditText editTextPassword;
     private Button buttonLogin;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         editTextMail = findViewById(R.id.editTextMail);
         editTextPassword = findViewById(R.id.editTextPassword);
@@ -45,50 +49,46 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                DatabaseUserManager dbManager = new DatabaseUserManager(LoginActivity.this);
-                try {
-                    dbManager.open();
+                mAuth.signInWithEmailAndPassword(mail, password)
+                        .addOnCompleteListener(LoginActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    db.collection("users").document(user.getUid())
+                                            .get()
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    DocumentSnapshot document = task1.getResult();
+                                                    if (document.exists()) {
+                                                        String fetchedMail = document.getString("email");
+                                                        String fetchedUsername = document.getString("username");
+                                                        boolean isPremium = document.getBoolean("isPremium");
 
-                    Cursor cursor = dbManager.fetch(mail);
+                                                        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                        editor.putBoolean("is_logged_in", true);
+                                                        editor.putString("user_email", fetchedMail);
+                                                        editor.putString("user_username", fetchedUsername);
+                                                        editor.putBoolean("is_premium", isPremium);
+                                                        editor.apply();
 
-                    if (cursor != null && cursor.moveToFirst()) {
-                        @SuppressLint("Range")
-                        String fetchedPassword = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseUserHelper.password));
-                        @SuppressLint("Range")
-                        String fetchedMail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseUserHelper.mail));
-                        @SuppressLint("Range")
-                        String fetchedUsername = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseUserHelper.username));
+                                                        Toast.makeText(LoginActivity.this, "Connexion réussie pour l'utilisateur : " + fetchedMail, Toast.LENGTH_SHORT).show();
 
-                        if (password.equals(fetchedPassword)) {
-                            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("is_logged_in", true);
-                            editor.putString("user_email", fetchedMail);
-                            editor.putString("user_username", fetchedUsername);
-                            editor.apply();
-
-                            Toast.makeText(LoginActivity.this, "Connexion réussie pour l'utilisateur : " + fetchedMail, Toast.LENGTH_SHORT).show();
-                            cursor.close();
-                            dbManager.close();
-
-                            Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Combinaison mail / mot de passe incorrecte", Toast.LENGTH_SHORT).show();
-                            cursor.close();
-                            dbManager.close();
-                        }
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Aucun compte avec l'adresse : " + mail, Toast.LENGTH_SHORT).show();
-                        if (cursor != null) {
-                            cursor.close();
-                        }
-                        dbManager.close();
-                    }
-                } catch (SQLDataException e) {
-                    throw new RuntimeException(e);
-                }
+                                                        Intent intent = new Intent(LoginActivity.this, MainMenuActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Aucun compte avec l'adresse : " + mail, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } else {
+                                                    Toast.makeText(LoginActivity.this, "Erreur de récupération des données utilisateur.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Combinaison mail / mot de passe incorrecte", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
