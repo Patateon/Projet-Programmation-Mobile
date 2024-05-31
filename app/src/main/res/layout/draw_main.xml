@@ -111,7 +111,7 @@
         android:id="@+id/toolbarSecondOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="8dp"
         android:orientation="vertical"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -133,6 +133,26 @@
             android:layout_height="48dp"
             android:contentDescription="@string/buttonCircleShape"
             android:src="@drawable/circle"
+            android:background="@drawable/fill_button_background_selector"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
+
+        <ImageButton
+            android:id="@+id/buttonTriangleShape"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/buttonTriangleShape"
+            android:src="@drawable/triangle"
+            android:background="@drawable/fill_button_background_selector"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
+
+        <ImageButton
+            android:id="@+id/buttonSegmentShape"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/buttonSegmentShape"
+            android:src="@drawable/segment"
             android:background="@drawable/fill_button_background_selector"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true" />

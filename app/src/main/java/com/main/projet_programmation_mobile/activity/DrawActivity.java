@@ -27,6 +27,9 @@ public class DrawActivity extends AppCompatActivity {
     private LinearLayout toolbarSecondOptions;
     private ImageButton buttonSquareShape;
     private ImageButton buttonCircleShape;
+    private ImageButton buttonTriangleShape;
+
+    private ImageButton buttonSegmentShape;
     private int currentColor = Color.BLACK; // Définissez une couleur par défaut
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,24 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
+        buttonTriangleShape = findViewById(R.id.buttonTriangleShape);
+        buttonTriangleShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleTriangleDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonSegmentShape = findViewById(R.id.buttonSegmentShape);
+        buttonSegmentShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleSegmentDrawingMode();
+                updateButtonStates();
+            }
+        });
+
     }
 
     private void openColorPickerDialog() {
@@ -158,6 +179,8 @@ public class DrawActivity extends AppCompatActivity {
         buttonColor.setSelected(drawingView.isDrawing());
         buttonSquareShape.setSelected(drawingView.isDrawingSquare());
         buttonCircleShape.setSelected(drawingView.isDrawingCircle());
+        buttonTriangleShape.setSelected(drawingView.isDrawingTriangle());
+        buttonSegmentShape.setSelected(drawingView.isDrawingSegment());
     }
 
 

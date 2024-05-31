@@ -31,6 +31,10 @@ public class DrawingView extends View {
 
     private boolean isDrawingCircle = false;
 
+    private boolean isDrawingTriangle = false;
+
+    private boolean isDrawingSegment=false;
+
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupPaint();
@@ -69,6 +73,12 @@ public class DrawingView extends View {
         if (isDrawingCircle) {
             drawCircle(canvas);
         }
+        if (isDrawingTriangle) {
+            drawTriangle(canvas,15000);
+        }
+        if (isDrawingSegment) {
+            drawSegment(canvas);
+        }
     }
 
     private void drawSquare(Canvas canvas) {
@@ -85,19 +95,83 @@ public class DrawingView extends View {
         float centerY = (startY + endY) / 2;
         canvas.drawCircle(centerX, centerY, radius, drawPaint);
     }
+
+    private void drawTriangle(Canvas canvas, float desiredArea) {
+        float dx = endX - startX;
+        float dy = endY - startY;
+        float newDesiredArea=desiredArea;
+        // Calculate the length of the base
+        float baseLength = (float) Math.sqrt(dx * dx + dy * dy);
+
+        // Calculate the required height to achieve the desired area
+        if (baseLength<50){
+            newDesiredArea=desiredArea/60;
+        }
+        if (baseLength<100){
+            newDesiredArea=desiredArea/2;
+        }
+        if (baseLength>400){
+            newDesiredArea=desiredArea*7;
+        }
+        if (baseLength>1000){
+            newDesiredArea=desiredArea*21;
+        }
+        if (baseLength>1800){
+            newDesiredArea=desiredArea*63;
+        }
+        float height = (2 * newDesiredArea) / baseLength;
+
+        // Calculate the midpoint of the base
+        float midX = (startX + endX) / 2;
+        float midY = (startY + endY) / 2;
+
+        // Calculate the perpendicular vector to the base
+        float perpendicularX = -dy;
+        float perpendicularY = dx;
+
+        // Normalize the perpendicular vector
+        float perpLength = (float) Math.sqrt(perpendicularX * perpendicularX + perpendicularY * perpendicularY);
+        perpendicularX /= perpLength;
+        perpendicularY /= perpLength;
+
+        // Calculate the third vertex using the height and the perpendicular vector
+        float vertex3X = midX + height * perpendicularX;
+        float vertex3Y = midY + height * perpendicularY;
+
+        // Draw the triangle
+        Path trianglePath = new Path();
+        trianglePath.moveTo(startX, startY);
+        trianglePath.lineTo(endX, endY);
+        trianglePath.lineTo(vertex3X, vertex3Y);
+        trianglePath.close();
+
+        canvas.drawPath(trianglePath, drawPaint);
+    }
+
+    private void drawSegment(Canvas canvas) {
+        Path Path = new Path();
+        Path.moveTo(startX, startY);
+        Path.lineTo(endX, endY);
+        canvas.drawPath(Path, drawPaint);
+    }
+
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float touchX = event.getX();
         float touchY = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                startX = touchX;
+                startY = touchY;
                 if (isFilling) {
                     fillArea((int) touchX, (int) touchY);
                 } else if (isDrawing) {
                     drawPath.moveTo(touchX, touchY);
                     startX = touchX;
                     startY = touchY;
-                } else if (isDrawingSquare || isDrawingCircle) {
+                } else if (isDrawingSquare || isDrawingCircle || isDrawingTriangle || isDrawingSegment) {
                     startX = touchX;
                     startY = touchY;
                     endX = touchX;
@@ -109,7 +183,7 @@ public class DrawingView extends View {
                     drawPath.lineTo(touchX, touchY);
                 } else if (isErasing) {
                     erasePath(touchX, touchY);
-                } else if (isDrawingSquare || isDrawingCircle) {
+                } else if (isDrawingSquare || isDrawingCircle || isDrawingTriangle || isDrawingSegment) {
                     endX = touchX;
                     endY = touchY;
                     invalidate();
@@ -129,6 +203,14 @@ public class DrawingView extends View {
                     float centerX = (startX + endX) / 2;
                     float centerY = (startY + endY) / 2;
                     canvas.drawCircle(centerX, centerY, radius, drawPaint);
+                } else if(isDrawingTriangle){
+                    endX = touchX;
+                    endY = touchY;
+                    drawTriangle(canvas,15000);
+                } else if(isDrawingSegment){
+                    endX=touchX;
+                    endY=touchY;
+                    drawSegment(canvas);
                 }
                 drawPath.reset();
                 invalidate();
@@ -168,6 +250,8 @@ public class DrawingView extends View {
             isErasing=false;
             isDrawingSquare=false;
             isDrawingCircle=false;
+            isDrawingTriangle=false;
+            isDrawingSegment=false;
         }
         else isDrawing=true;
     }
@@ -178,6 +262,8 @@ public class DrawingView extends View {
             isFilling=false;
             isDrawingSquare=false;
             isDrawingCircle=false;
+            isDrawingTriangle=false;
+            isDrawingSegment=false;
         }
         else isDrawing=true;
     }
@@ -199,6 +285,7 @@ public class DrawingView extends View {
         return isDrawing;
     }
 
+
     public void toggleSquareDrawingMode() {
         isDrawingSquare = !isDrawingSquare;
         if (isDrawingSquare) {
@@ -206,6 +293,8 @@ public class DrawingView extends View {
             isErasing = false;
             isFilling = false;
             isDrawingCircle=false;
+            isDrawingTriangle=false;
+            isDrawingSegment=false;
         } else {
             isDrawing = true;
         }
@@ -222,6 +311,8 @@ public class DrawingView extends View {
             isErasing = false;
             isFilling = false;
             isDrawingSquare = false;
+            isDrawingTriangle=false;
+            isDrawingSegment=false;
         } else {
             isDrawing = true;
         }
@@ -230,6 +321,43 @@ public class DrawingView extends View {
     public boolean isDrawingCircle() {
         return isDrawingCircle;
     }
+    public boolean isDrawingTriangle() {
+        return isDrawingTriangle;
+    }
+
+    public void toggleTriangleDrawingMode() {
+        isDrawingTriangle = !isDrawingTriangle;
+        if (isDrawingTriangle) {
+            isDrawing = false;
+            isErasing = false;
+            isFilling = false;
+            isDrawingSquare = false;
+            isDrawingCircle=false;
+            isDrawingSegment=false;
+        } else {
+            isDrawing = true;
+        }
+    }
+
+    public boolean isDrawingSegment() {
+        return isDrawingSegment;
+    }
+
+    public void toggleSegmentDrawingMode() {
+        isDrawingSegment = !isDrawingSegment;
+        if (isDrawingSegment) {
+            isDrawing = false;
+            isErasing = false;
+            isFilling = false;
+            isDrawingSquare = false;
+            isDrawingCircle=false;
+            isDrawingTriangle=false;
+        } else {
+            isDrawing = true;
+        }
+    }
+
+
 
     private void fillArea(int x, int y) {
         int targetColor = bitmap.getPixel(x, y);

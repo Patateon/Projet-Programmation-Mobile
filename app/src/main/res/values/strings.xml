@@ -28,4 +28,6 @@
     <string name="second_options">rightoptions</string>
     <string name="buttonSquareShape">SquareShape</string>
     <string name="buttonCircleShape">CircleShape</string>
+    <string name="buttonTriangleShape">TriangleShape</string>
+    <string name="buttonSegmentShape">Segment</string>
 </resources>
