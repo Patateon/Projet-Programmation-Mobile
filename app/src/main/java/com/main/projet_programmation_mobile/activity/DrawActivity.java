@@ -19,6 +19,18 @@ public class DrawActivity extends AppCompatActivity {
 
     private DrawingView drawingView;
     private ImageButton buttonToggleOptions;
+
+    private ImageButton buttonFill;
+    private ImageButton buttonToggleMode;
+
+    private ImageButton buttonColor;
+    private ImageButton buttonSecondOptions;
+    private LinearLayout toolbarSecondOptions;
+    private ImageButton buttonSquareShape;
+    private ImageButton buttonCircleShape;
+    private ImageButton buttonTriangleShape;
+
+    private ImageButton buttonSegmentShape;
     private int currentColor = Color.BLACK; // Définissez une couleur par défaut
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +56,17 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton buttonColor = findViewById(R.id.buttonColor);
         ImageButton buttonClear = findViewById(R.id.buttonClear);
-        ImageButton buttonToggleMode = findViewById(R.id.buttonToggleMode);
+        buttonToggleMode = findViewById(R.id.buttonToggleMode); // Initialisez buttonToggleMode ici
+        buttonFill = findViewById(R.id.buttonFill);
+        buttonColor = findViewById(R.id.buttonColor);
         Slider sliderThickness = findViewById(R.id.sliderThickness);
 
         buttonColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openColorPickerDialog();
+                updateButtonStates();
             }
         });
 
@@ -67,7 +81,20 @@ public class DrawActivity extends AppCompatActivity {
         buttonToggleMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean newState = !buttonToggleMode.isSelected();
+                buttonToggleMode.setSelected(newState);
                 drawingView.toggleDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonFill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean newState = !buttonFill.isSelected();
+                buttonFill.setSelected(newState);
+                drawingView.toggleFillMode();
+                updateButtonStates();
             }
         });
 
@@ -77,6 +104,59 @@ public class DrawActivity extends AppCompatActivity {
                 drawingView.setThickness(value);
             }
         });
+
+
+        buttonSecondOptions = findViewById(R.id.buttonSecondOptions);
+        toolbarSecondOptions = findViewById(R.id.toolbarSecondOptions);
+
+
+        buttonSecondOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
+                    toolbarSecondOptions.setVisibility(View.INVISIBLE);
+                } else {
+                    toolbarSecondOptions.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        buttonSquareShape = findViewById(R.id.buttonSquareShape);
+        buttonSquareShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleSquareDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonCircleShape = findViewById(R.id.buttonCircleShape);
+        buttonCircleShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleCircleDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonTriangleShape = findViewById(R.id.buttonTriangleShape);
+        buttonTriangleShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleTriangleDrawingMode();
+                updateButtonStates();
+            }
+        });
+
+        buttonSegmentShape = findViewById(R.id.buttonSegmentShape);
+        buttonSegmentShape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingView.toggleSegmentDrawingMode();
+                updateButtonStates();
+            }
+        });
+
     }
 
     private void openColorPickerDialog() {
@@ -92,6 +172,16 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
         colorPickerDialog.show();
+    }
+
+    private void updateButtonStates() {
+        buttonFill.setSelected(drawingView.isFilling());
+        buttonToggleMode.setSelected(drawingView.isErasing());
+        buttonColor.setSelected(drawingView.isDrawing());
+        buttonSquareShape.setSelected(drawingView.isDrawingSquare());
+        buttonCircleShape.setSelected(drawingView.isDrawingCircle());
+        buttonTriangleShape.setSelected(drawingView.isDrawingTriangle());
+        buttonSegmentShape.setSelected(drawingView.isDrawingSegment());
     }
 
 
