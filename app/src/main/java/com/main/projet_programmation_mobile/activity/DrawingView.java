@@ -50,11 +50,41 @@ public class DrawingView extends View {
 
     private CollectionReference drawingsRef;
 
+    public DrawingView(Context context) {
+        super(context);
+        this.context = context;
+        setupPaint();
+    }
+
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         setupPaint();
-        setupFirestore();
+    }
+
+    public DrawingView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.context = context;
+        setupPaint();
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        // Vérifier si le bitmap est immuable
+        if (!bitmap.isMutable()) {
+            // Créer un bitmap mutable de la même taille et config que l'original
+            Bitmap mutableBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            // Créer un Canvas temporaire pour copier le contenu de l'original au mutable
+            Canvas tempCanvas = new Canvas(mutableBitmap);
+            tempCanvas.drawBitmap(bitmap, 0, 0, null);
+            // Utiliser le bitmap mutable pour le dessin
+            this.bitmap = mutableBitmap;
+        } else {
+            this.bitmap = bitmap;
+        }
+        // Créer un Canvas à partir du bitmap (assurément mutable)
+        canvas = new Canvas(this.bitmap);
+        // Redessiner la vue
+        invalidate();
     }
 
     private void setupPaint() {
@@ -69,12 +99,6 @@ public class DrawingView extends View {
         drawPath = new Path();
     }
 
-    private void setupFirestore(){
-        // Initialisation de la référence à la collection Firestore pour les dessins
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        drawingsRef = db.collection("canvas");
-    }
-
     @Override
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
@@ -86,7 +110,9 @@ public class DrawingView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.WHITE);
-        canvas.drawBitmap(bitmap, 0, 0, null);
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, 0, 0, null);
+        }
         if (!isErasing) {
             canvas.drawPath(drawPath, drawPaint);
         }
@@ -379,29 +405,6 @@ public class DrawingView extends View {
             isDrawing = true;
         }
     }
-
-//    public void saveDrawingToFirestore(String name){
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        canvasBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        byte[] imageData = baos.toByteArray();
-//        String imageBase64 = Base64.encodeToString(imageData, Base64.DEFAULT);
-//
-//        Map<String, Object> drawingData = new HashMap<>();
-//        drawingData.put("name", name); // Ajouter le nom du dessin à la collection
-//        drawingData.put("image", imageBase64); // Sauvegarder l'image encodée en base64
-//
-//        drawingsRef.add(drawingData)
-//                .addOnSuccessListener(documentReference -> {
-//                    // Le dessin a été enregistré avec succès dans Firestore
-//                    Toast.makeText(this.context, "Dessin sauvergardé.", Toast.LENGTH_SHORT).show();
-//                })
-//                .addOnFailureListener(e -> {
-//                    // Échec de l'enregistrement du dessin dans Firestore
-//                    Toast.makeText(this.context, "Erreur lors de la sauvegarde.", Toast.LENGTH_SHORT).show();
-//                });
-//
-//    }
-
 
     public Bitmap getBitmap() {
         return bitmap;

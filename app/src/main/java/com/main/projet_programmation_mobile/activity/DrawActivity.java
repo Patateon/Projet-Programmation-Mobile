@@ -3,6 +3,7 @@ package com.main.projet_programmation_mobile.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Base64;
@@ -32,10 +33,8 @@ public class DrawActivity extends AppCompatActivity {
 
     private DrawingView drawingView;
     private ImageButton buttonToggleOptions;
-
     private ImageButton buttonFill;
     private ImageButton buttonToggleMode;
-
     private ImageButton buttonSave;
     private ImageButton buttonColor;
     private ImageButton buttonSecondOptions;
@@ -43,9 +42,9 @@ public class DrawActivity extends AppCompatActivity {
     private ImageButton buttonSquareShape;
     private ImageButton buttonCircleShape;
     private ImageButton buttonTriangleShape;
-
     private ImageButton buttonSegmentShape;
     private int currentColor = Color.BLACK; // Définissez une couleur par défaut
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +94,7 @@ public class DrawActivity extends AppCompatActivity {
         buttonToggleMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean newState = !buttonToggleMode.isSelected();
-                buttonToggleMode.setSelected(newState);
+                // Code pour basculer entre les modes dessin et effacement
                 drawingView.toggleDrawingMode();
                 updateButtonStates();
             }
@@ -105,8 +103,7 @@ public class DrawActivity extends AppCompatActivity {
         buttonFill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean newState = !buttonFill.isSelected();
-                buttonFill.setSelected(newState);
+                // Code pour basculer entre les modes de remplissage et de non-remplissage
                 drawingView.toggleFillMode();
                 updateButtonStates();
             }
@@ -115,14 +112,14 @@ public class DrawActivity extends AppCompatActivity {
         sliderThickness.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                // Code pour modifier l'épaisseur du pinceau
                 drawingView.setThickness(value);
             }
         });
 
-
-        buttonSecondOptions = findViewById(R.id.buttonSecondOptions);
+        // Second Options
         toolbarSecondOptions = findViewById(R.id.toolbarSecondOptions);
-
+        buttonSecondOptions = findViewById(R.id.buttonSecondOptions);
 
         buttonSecondOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,25 +172,93 @@ public class DrawActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSaveDialog();
+                saveImage();
             }
         });
 
+        // Check if there's image data passed through intent
+        String encodedImage = getIntent().getStringExtra("encodedImage");
+        System.out.println(encodedImage);
+        if (encodedImage != null && !encodedImage.isEmpty()) {
+            // Décoder l'image encodée en base64 et l'afficher dans DrawingView
+            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            drawingView.setBitmap(decodedBitmap);
+        }
     }
 
     private void openColorPickerDialog() {
-        AmbilWarnaDialog colorPickerDialog = new AmbilWarnaDialog(this, currentColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+        AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, currentColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
+                // Color selected
                 currentColor = color;
                 drawingView.setColor(currentColor);
             }
 
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
+                // Cancel action
             }
         });
-        colorPickerDialog.show();
+        colorPicker.show();
+    }
+
+    private void saveImage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Nommer l'image");
+
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String imageName = input.getText().toString();
+
+                if (!imageName.isEmpty()) {
+                    // Save the image with the given name
+                    Bitmap bitmap = drawingView.getBitmap();
+                    String imageData = encodeToBase64(bitmap);
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    Map<String, Object> imageMap = new HashMap<>();
+                    imageMap.put("name", imageName);
+                    imageMap.put("image", imageData);
+
+                    db.collection("images").document(imageName)
+                            .set(imageMap)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(DrawActivity.this, "Image enregistrée avec succès", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(DrawActivity.this, "Erreur lors de l'enregistrement de l'image", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        });
+
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    private String encodeToBase64(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     private void updateButtonStates() {
@@ -205,64 +270,4 @@ public class DrawActivity extends AppCompatActivity {
         buttonTriangleShape.setSelected(drawingView.isDrawingTriangle());
         buttonSegmentShape.setSelected(drawingView.isDrawingSegment());
     }
-
-    private void saveDrawingToFirestore(String drawingName) {
-        DrawingView drawingView = findViewById(R.id.drawingView);
-        Bitmap bitmap = drawingView.getBitmap();
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] byteArray = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-        Map<String, Object> drawing = new HashMap<>();
-        drawing.put("name", drawingName);
-        drawing.put("image", encodedImage);
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("drawings").document(drawingName)
-                .set(drawing)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Dessin sauvegardé avec succès
-                        Toast.makeText(DrawActivity.this, "Drawing saved", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Erreur lors de la sauvegarde du dessin
-                        Toast.makeText(DrawActivity.this, "Failed to save drawing", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-
-    private void showSaveDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Save Drawing");
-
-        final EditText input = new EditText(this);
-        builder.setView(input);
-
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String drawingName = input.getText().toString();
-                saveDrawingToFirestore(drawingName);
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
-
-
-
 }
