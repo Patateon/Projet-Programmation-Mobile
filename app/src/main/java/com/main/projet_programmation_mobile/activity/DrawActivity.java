@@ -1,11 +1,13 @@
 package com.main.projet_programmation_mobile.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -110,14 +112,20 @@ public class DrawActivity extends AppCompatActivity {
         buttonSecondOptions = findViewById(R.id.buttonSecondOptions);
         toolbarSecondOptions = findViewById(R.id.toolbarSecondOptions);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String is_premium = sharedPreferences.getString("is_premium", "Non");
 
         buttonSecondOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
-                    toolbarSecondOptions.setVisibility(View.INVISIBLE);
-                } else {
-                    toolbarSecondOptions.setVisibility(View.VISIBLE);
+                if(is_premium == "Non"){
+                    Toast.makeText(DrawActivity.this, "Vous n'etes pas membre premium", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
+                        toolbarSecondOptions.setVisibility(View.INVISIBLE);
+                    } else {
+                        toolbarSecondOptions.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
