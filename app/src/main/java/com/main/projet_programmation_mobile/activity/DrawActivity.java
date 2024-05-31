@@ -6,13 +6,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import yuku.ambilwarna.AmbilWarnaDialog;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.slider.Slider;
 import com.main.projet_programmation_mobile.R;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class DrawActivity extends AppCompatActivity {
 
@@ -99,7 +100,7 @@ public class DrawActivity extends AppCompatActivity {
 
         sliderThickness.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
-            public void onValueChange(Slider slider, float value, boolean fromUser) {
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 drawingView.setThickness(value);
             }
         });

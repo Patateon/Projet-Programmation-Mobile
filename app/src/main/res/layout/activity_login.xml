@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white_background">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <ImageButton
+                android:id="@+id/home_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/settings_image_button"
+                android:scaleType="fitCenter"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:src="@drawable/home" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8" />
+        </LinearLayout>
+    </LinearLayout>
     <EditText
         android:id="@+id/editTextMail"
         android:layout_width="match_parent"
@@ -10,8 +46,11 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="250dp"
         android:layout_marginEnd="30dp"
-        android:hint="Mail"
-        android:inputType="text" />
+        android:autofillHints=""
+        android:hint="@string/identifiant"
+        android:inputType="text"
+        android:minHeight="48dp"
+        style="@style/EditTextStyle"/>
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -21,8 +60,11 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="30dp"
-        android:hint="Mot de passe"
-        android:inputType="textPassword" />
+        android:autofillHints=""
+        android:hint="@string/mot_de_passe"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        style="@style/EditTextStyle"/>
 
 
     <Button
@@ -33,7 +75,9 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="49dp"
         android:layout_marginEnd="30dp"
-        android:text="Se connecter" />
+        android:text="@string/se_connecter"
+        android:backgroundTint="@color/blue_button"
+        android:textColor="@color/black_text"/>
 
     <Button
         android:id="@+id/buttonSignUp"
@@ -42,6 +86,8 @@
         android:layout_below="@id/buttonLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Créer un compte" />
+        android:text="@string/cr_er_un_compte"
+        android:backgroundTint="@color/blue_button"
+        android:textColor="@color/black_text"/>
 
 </RelativeLayout>

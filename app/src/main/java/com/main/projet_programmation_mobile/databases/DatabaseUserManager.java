@@ -9,18 +9,16 @@ import java.sql.SQLDataException;
 
 public class DatabaseUserManager {
     private DatabaseUserHelper dbHelper;
-    private Context context;
+    private final Context context;
     private SQLiteDatabase database;
 
-    public DatabaseUserManager(DatabaseUserHelper dbHelper, Context context) {
-        this.dbHelper = dbHelper;
+    public DatabaseUserManager(Context context){
         this.context = context;
     }
 
-    public DatabaseUserManager open() throws SQLDataException {
+    public void open() throws SQLDataException {
         dbHelper = new DatabaseUserHelper(context);
         database = dbHelper.getWritableDatabase();
-        return this;
     }
 
     public void close() {
@@ -54,8 +52,8 @@ public class DatabaseUserManager {
     }
 
     public Cursor fetch(String mail){
-        String [] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
-        Cursor cursor = database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = " + mail, null, null, null, null);
+        String[] columns = new String[] {DatabaseUserHelper.id, DatabaseUserHelper.username, DatabaseUserHelper.mail, DatabaseUserHelper.password};
+        Cursor cursor = database.query(DatabaseUserHelper.user_table, columns, DatabaseUserHelper.mail + " = ?", new String[] {mail}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }

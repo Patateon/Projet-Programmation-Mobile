@@ -28,7 +28,7 @@
                 android:layout_height="match_parent" />
 
             <ImageButton
-                android:id="@+id/setting_button"
+                android:id="@+id/login_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -37,7 +37,7 @@
                 android:scaleType="fitCenter"
                 android:scaleX="0.9"
                 android:scaleY="0.9"
-                android:src="@drawable/setting"
+                android:src="@drawable/login"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
                 android:fontFamily="monospace"
                 android:text="@string/create_canvas"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -96,14 +96,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/canvas_1_test"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                    <Button-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/canvas_1_test"-->
+<!--                        android:textColor="#000000"-->
+<!--                        android:backgroundTint="@color/blue_button"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
