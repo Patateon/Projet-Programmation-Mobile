@@ -12,6 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.main.projet_programmation_mobile.R;
 
@@ -23,11 +26,15 @@ public class UserInfoActivity extends AppCompatActivity {
     private Button getPremiumButton;
     private Button logoutButton;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_info_activity);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         textViewUsername = findViewById(R.id.textViewUsername);
         textViewEmail = findViewById(R.id.textViewEmail);
@@ -35,26 +42,33 @@ public class UserInfoActivity extends AppCompatActivity {
         getPremiumButton = findViewById(R.id.getPremium_button);
         logoutButton = findViewById(R.id.logout_button);
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String fetchedMail = document.getString("email");
+                                String fetchedUsername = document.getString("username");
+                                boolean isPremium = document.getBoolean("isPremium");
 
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String username = sharedPreferences.getString("user_username", "N/A");
-        String email = sharedPreferences.getString("user_email", "N/A");
-        String is_premium = sharedPreferences.getString("is_premium", "Non");
+                                textViewUsername.setText("Username : " + fetchedUsername);
+                                textViewEmail.setText("Email : " + fetchedMail);
+                                textViewPremium.setText("Compte premium : " + (isPremium ? "Oui" : "Non"));
 
-        textViewUsername.setText("Username : " + username);
-        textViewEmail.setText("Email : " + email);
-        textViewPremium.setText("Compte premium : " + is_premium);
+                                updateUI(isPremium);
 
-        // Show or hide the Get Premium button based on premium status
-        if ("Non".equals(is_premium)) {
-            getPremiumButton.setVisibility(View.VISIBLE);
-            getPremiumButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPremiumPopup(username);
-                }
-            });
+                                /*if (!isPremium) {
+                                    getPremiumButton.setVisibility(View.VISIBLE);*/
+                                    getPremiumButton.setOnClickListener(v -> showPremiumPopup(fetchedMail, isPremium));
+                                //}
+                            }
+                        } else {
+                            Toast.makeText(UserInfoActivity.this, "Erreur de récupération des données utilisateur.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
 
         // Home button
@@ -65,54 +79,75 @@ public class UserInfoActivity extends AppCompatActivity {
         });
 
         // Logout button
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
+        logoutButton.setOnClickListener(v -> {
+            mAuth.signOut();
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
 
-                Intent intent = new Intent(UserInfoActivity.this, MainMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
+            Intent intent = new Intent(UserInfoActivity.this, MainMenuActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
-    private void showPremiumPopup(String username) {
+    private void showPremiumPopup(String mail, boolean isPremium) {
+        String title = isPremium ? "Résilier Premium" : "Passer Premium";
+        String message = isPremium ? "Voulez-vous résilier votre abonnement Premium ?" : "Voulez-vous devenir membre Premium ?";
+
         new AlertDialog.Builder(this)
-                .setTitle("Devenir Premium")
-                .setMessage("Voulez-vous devenir un membre premium")
+                .setTitle(title)
+                .setMessage(message)
                 .setPositiveButton("Oui", (dialog, which) -> {
-                    updatePremiumStatus(username);
-                    textViewPremium.setText("Compte premium : Oui");
-                    getPremiumButton.setVisibility(View.GONE);
-                    Toast.makeText(UserInfoActivity.this, "Vous etes maintenant un membre Premium", Toast.LENGTH_SHORT).show();
+                    updatePremiumStatus(mail, !isPremium);
+                    Intent intent = new Intent(UserInfoActivity.this, UserInfoActivity.class);
+                    startActivity(intent);
                 })
                 .setNegativeButton("Non", null)
                 .show();
     }
 
-    private void updatePremiumStatus(String username) {
-        // Assuming the username is a unique identifier
-        db.collection("users")
-                .whereEqualTo("username", username)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        String userId = queryDocumentSnapshots.getDocuments().get(0).getId();
-                        db.collection("users").document(userId)
-                                .update("is_premium", "Oui")
-                                .addOnSuccessListener(aVoid -> {
-                                    SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("is_premium", "Oui");
-                                    editor.apply();
-                                })
-                                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Failed to update premium status", Toast.LENGTH_SHORT).show());
-                    }
-                })
-                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Failed to find user", Toast.LENGTH_SHORT).show());
+    private void updatePremiumStatus(String mail, boolean isPremium) {
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                db.collection("users").document(user.getUid())
+                                        .update("isPremium", isPremium)
+                                        .addOnSuccessListener(aVoid -> {
+                                            textViewPremium.setText("Compte premium : " + (isPremium ? "Oui" : "Non"));
+                                            getPremiumButton.setText(isPremium ? "Résilier" : "Passer Premium");
+
+                                            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putBoolean("is_premium", isPremium);
+                                            editor.apply();
+
+                                            Toast.makeText(UserInfoActivity.this, isPremium ? "Vous êtes maintenant un membre premium" : "Votre abonnement premium a été résilié", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Failed to update premium status", Toast.LENGTH_SHORT).show());
+                            }
+                        } else {
+                            Toast.makeText(UserInfoActivity.this, "Erreur de récupération des données utilisateur.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
+
+    private void updateUI(boolean isPremium) {
+        if (isPremium) {
+            getPremiumButton.setText("Résilier");
+        } else {
+            getPremiumButton.setText("Passer Premium");
+        }
+    }
+
 }

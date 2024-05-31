@@ -90,11 +90,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Get Premium"
+                android:text="Passer Premium"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/blue_button"
-                android:textColor="@color/black_text"
-                android:visibility="gone"/> <!-- Initially hidden -->
+                android:textColor="@color/black_text"/>
 
             <Button
                 android:id="@+id/logout_button"

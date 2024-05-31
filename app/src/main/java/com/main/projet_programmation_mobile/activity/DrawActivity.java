@@ -113,12 +113,12 @@ public class DrawActivity extends AppCompatActivity {
         toolbarSecondOptions = findViewById(R.id.toolbarSecondOptions);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String is_premium = sharedPreferences.getString("is_premium", "Non");
+        boolean isPremium = sharedPreferences.getBoolean("is_premium", false);
 
         buttonSecondOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(is_premium == "Non"){
+                if(!isPremium){
                     Toast.makeText(DrawActivity.this, "Vous n'etes pas membre premium", Toast.LENGTH_SHORT).show();
                 }else {
                     if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
