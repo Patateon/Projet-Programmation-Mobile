@@ -1,0 +1,48 @@
+Index: app/src/main/java/com/main/projet_programmation_mobile/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/main/projet_programmation_mobile/LoginActivity.java b/app/src/main/java/com/main/projet_programmation_mobile/activity/LoginActivity.java
+rename from app/src/main/java/com/main/projet_programmation_mobile/LoginActivity.java
+rename to app/src/main/java/com/main/projet_programmation_mobile/activity/LoginActivity.java
+--- a/app/src/main/java/com/main/projet_programmation_mobile/LoginActivity.java	(revision 88b3cdd737e9ce6cd18a4247f6a28b32c30f3ff5)
++++ b/app/src/main/java/com/main/projet_programmation_mobile/activity/LoginActivity.java	(date 1716818856550)
+@@ -1,16 +1,15 @@
+-package com.main.projet_programmation_mobile;
++package com.main.projet_programmation_mobile.activity;
+ 
+ import android.database.Cursor;
+ import android.os.Bundle;
+-import android.util.Log;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.Toast;
+-import android.content.Intent;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
++import com.main.projet_programmation_mobile.R;
+ import com.main.projet_programmation_mobile.databases.DatabaseUserManager;
+ 
+ public class LoginActivity extends AppCompatActivity {
+Index: gradle.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Project-wide Gradle settings.\r\n# IDE (e.g. Android Studio) users:\r\n# Gradle settings configured through the IDE *will override*\r\n# any settings specified in this file.\r\n# For more details on how to configure your build environment visit\r\n# http://www.gradle.org/docs/current/userguide/build_environment.html\r\n# Specifies the JVM arguments used for the daemon process.\r\n# The setting is particularly useful for tweaking memory settings.\r\norg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8\r\n# When configured, Gradle will run in incubating parallel mode.\r\n# This option should only be used with decoupled projects. For more details, visit\r\n# https://developer.android.com/r/tools/gradle-multi-project-decoupled-projects\r\n# org.gradle.parallel=true\r\n# AndroidX package structure to make it clearer which packages are bundled with the\r\n# Android operating system, and which are packaged with your app's APK\r\n# https://developer.android.com/topic/libraries/support-library/androidx-rn\r\nandroid.useAndroidX=true\r\n# Enables namespacing of each library's R class so that its R class includes only the\r\n# resources declared in the library itself and none from the library's dependencies,\r\n# thereby reducing the size of the R class for that library\r\nandroid.nonTransitiveRClass=true
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/gradle.properties b/gradle.properties
+--- a/gradle.properties	(revision 88b3cdd737e9ce6cd18a4247f6a28b32c30f3ff5)
++++ b/gradle.properties	(date 1715459541712)
+@@ -18,4 +18,5 @@
+ # Enables namespacing of each library's R class so that its R class includes only the
+ # resources declared in the library itself and none from the library's dependencies,
+ # thereby reducing the size of the R class for that library
+-android.nonTransitiveRClass=true
+\ No newline at end of file
++android.nonTransitiveRClass=true
++org.gradle.configuration-cache=true
+\ No newline at end of file

@@ -30,6 +30,7 @@ public class DatabaseCanvasManager {
         ContentValues values = new ContentValues();
         values.put(DatabaseCanvasHelper.name, name);
         values.put(DatabaseCanvasHelper.data, data);
+        database.insert(DatabaseCanvasHelper.canvas_table, null, values);
     }
 
     public Cursor fetch() {
