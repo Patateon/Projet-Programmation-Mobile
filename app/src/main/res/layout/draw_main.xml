@@ -7,10 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".activity.DrawActivity">
 
-    <!-- DrawingView -->
 
     <!-- Bouton pour afficher les options -->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -19,6 +17,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -34,6 +33,7 @@
             android:layout_marginEnd="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- DrawingView -->
     <com.main.projet_programmation_mobile.activity.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
@@ -50,9 +50,9 @@
         android:layout_height="48dp"
         android:adjustViewBounds="true"
         android:backgroundTint="@color/blue_button"
+        android:contentDescription="@string/drawoptions"
         android:scaleType="fitCenter"
         android:src="@drawable/penbutton"
-        android:contentDescription="@string/drawoptions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,47 +74,46 @@
             android:id="@+id/buttonColor"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/colorimage"
-            android:contentDescription="@string/colorpicker"
             android:background="@drawable/fill_button_background_selector"
-            android:scaleType="fitCenter" />
+            android:contentDescription="@string/colorpicker"
+            android:scaleType="fitCenter"
+            android:src="@drawable/colorimage" />
 
         <ImageButton
             android:id="@+id/buttonClear"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/cleanimage"
-            android:contentDescription="@string/cleanbutton"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter" />
+            android:contentDescription="@string/cleanbutton"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cleanimage" />
 
         <ImageButton
             android:id="@+id/buttonToggleMode"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/eraserimage"
-            android:contentDescription="@string/rubberbutton"
             android:background="@drawable/fill_button_background_selector"
-            android:scaleType="fitCenter" />
+            android:contentDescription="@string/rubberbutton"
+            android:scaleType="fitCenter"
+            android:src="@drawable/eraserimage" />
 
         <ImageButton
             android:id="@+id/buttonFill"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/rempimage"
-            android:contentDescription="@string/fillbutton"
             android:background="@drawable/fill_button_background_selector"
-            android:scaleType="fitCenter" />
+            android:contentDescription="@string/fillbutton"
+            android:scaleType="fitCenter"
+            android:src="@drawable/rempimage" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/sliderThickness"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:valueFrom="1"
-            android:valueTo="30"
             android:stepSize="1"
-            android:value="5" />
-
+            android:value="5"
+            android:valueFrom="1"
+            android:valueTo="30" />
     </LinearLayout>
 
     <LinearLayout
@@ -131,42 +130,41 @@
             android:id="@+id/buttonSquareShape"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:contentDescription="@string/buttonSquareShape"
-            android:src="@drawable/square"
+            android:adjustViewBounds="true"
             android:background="@drawable/fill_button_background_selector"
+            android:contentDescription="@string/buttonSquareShape"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/square" />
 
         <ImageButton
             android:id="@+id/buttonCircleShape"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:contentDescription="@string/buttonCircleShape"
-            android:src="@drawable/circle"
+            android:adjustViewBounds="true"
             android:background="@drawable/fill_button_background_selector"
+            android:contentDescription="@string/buttonCircleShape"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/circle" />
 
         <ImageButton
             android:id="@+id/buttonTriangleShape"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:contentDescription="@string/buttonTriangleShape"
-            android:src="@drawable/triangle"
+            android:adjustViewBounds="true"
             android:background="@drawable/fill_button_background_selector"
+            android:contentDescription="@string/buttonTriangleShape"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
+            android:src="@drawable/triangle" />
 
         <ImageButton
             android:id="@+id/buttonSegmentShape"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:contentDescription="@string/buttonSegmentShape"
-            android:src="@drawable/segment"
+            android:adjustViewBounds="true"
             android:background="@drawable/fill_button_background_selector"
+            android:contentDescription="@string/buttonSegmentShape"
             android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
-
+            android:src="@drawable/segment" />
     </LinearLayout>
 
     <ImageButton
@@ -184,5 +182,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.178" />
+
+    <ImageButton
+        android:id="@+id/saveButton"
+        android:layout_width="77dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="323dp"
+        android:backgroundTint="@color/blue_button"
+        android:scaleType="fitCenter"
+        android:src="@drawable/save"
+        android:contentDescription="@string/save"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toStartOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

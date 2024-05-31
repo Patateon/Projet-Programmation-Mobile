@@ -2,16 +2,17 @@ package com.main.projet_programmation_mobile.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,16 +22,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.main.projet_programmation_mobile.R;
-import com.main.projet_programmation_mobile.databases.DatabaseCanvasManager;
-import com.main.projet_programmation_mobile.databases.DatabaseCanvasHelper;
 
-import java.sql.SQLDataException;
-
-public class MainMenuActivity  extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class MainMenuActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private LinearLayout linearLayout;
-    private DatabaseCanvasManager databaseCanvasManager;
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,23 +44,13 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
             return insets;
         });
 
-        try {
-            databaseCanvasManager = new DatabaseCanvasManager(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            databaseCanvasManager.open();
-        } catch (SQLDataException e) {
-            throw new RuntimeException(e);
-        }
+        db = FirebaseFirestore.getInstance();
 
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(this);
         linearLayout = findViewById(R.id.linearLayout_canvas);
 
-        // Load a button for each canvas in the database
+        // Load a button for each canvas in the Firestore
         loadCanvas();
 
         // Handle login button
@@ -85,50 +77,53 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
     }
 
     @Override
-    protected void onDestroy() {
-        databaseCanvasManager.close();
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        // Perform search query in the database
-        Cursor cursor = databaseCanvasManager.fetch(newText);
-
-//        if (cursor != null){
-//            if (cursor.moveToFirst()){
-//                scrollView.removeAllViews();
-//                while (cursor.moveToNext()){
-//                    Button button = new Button(this);
-//                    int columnIndex = cursor.getColumnIndex(DatabaseCanvasHelper.name);
-//                    button.setText(cursor.getString(columnIndex));
-//                    scrollView.addView(button);
-//                }
-//            }
-//        }
-        
+        // Perform search query in the Firestore
+        searchCanvas(newText);
         return true;
     }
 
-    public void loadCanvas(){
-        Cursor cursor = databaseCanvasManager.fetch();
-        if (cursor.moveToFirst()){
-            do{
-                int columnIndex = cursor.getColumnIndex(DatabaseCanvasHelper.name);
-                if (columnIndex != -1) {
-                    createButton(cursor.getString(columnIndex));
-                }
-            }while (cursor.moveToNext());
-        }
+    public void loadCanvas() {
+        db.collection("images").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("name");
+                            String image = document.getString("image");
+                            if (name != null && image != null) {
+                                createButton(name, image);
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Erreur lors du chargement des images.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    public void createButton(String text){
+    public void searchCanvas(String query) {
+        db.collection("images").whereEqualTo("name", query).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        linearLayout.removeAllViews();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("name");
+                            String image = document.getString("image");
+                            if (name != null && image != null) {
+                                createButton(name, image);
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Erreur lors de la recherche des images.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
+    public void createButton(String text, String image) {
         // Create button
         Button button = new Button(this);
         button.setText(text);
@@ -140,8 +135,11 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
 
         // Add button function
         button.setOnClickListener(v -> {
-            // Open draw activity
-            startDrawing();
+            // Open draw activity with image data
+            Intent intent = new Intent(this, DrawActivity.class);
+            intent.putExtra("drawingName", text);
+            intent.putExtra("encodedImage", image);
+            startActivity(intent);
         });
 
         // Set button constraints
@@ -173,11 +171,5 @@ public class MainMenuActivity  extends AppCompatActivity implements SearchView.O
 
         // Add to the scroll view linear layout
         linearLayout.addView(constraintLayout);
-    }
-
-    public void startDrawing(){
-        // Open draw activity
-        Intent intent = new Intent(this, DrawActivity.class);
-        startActivity(intent);
     }
 }

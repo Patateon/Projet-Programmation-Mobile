@@ -6,8 +6,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -16,7 +27,9 @@ public class DrawingView extends View {
     private Paint paint;
     private Canvas canvas;
     private Bitmap bitmap;
+    private Context context;
 
+    private Bitmap canvasBitmap;
     private float startX, startY, endX, endY;
     private int currentColor = Color.BLACK;
 
@@ -35,9 +48,43 @@ public class DrawingView extends View {
 
     private boolean isDrawingSegment=false;
 
+    private CollectionReference drawingsRef;
+
+    public DrawingView(Context context) {
+        super(context);
+        this.context = context;
+        setupPaint();
+    }
+
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         setupPaint();
+    }
+
+    public DrawingView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.context = context;
+        setupPaint();
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        // Vérifier si le bitmap est immuable
+        if (!bitmap.isMutable()) {
+            // Créer un bitmap mutable de la même taille et config que l'original
+            Bitmap mutableBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            // Créer un Canvas temporaire pour copier le contenu de l'original au mutable
+            Canvas tempCanvas = new Canvas(mutableBitmap);
+            tempCanvas.drawBitmap(bitmap, 0, 0, null);
+            // Utiliser le bitmap mutable pour le dessin
+            this.bitmap = mutableBitmap;
+        } else {
+            this.bitmap = bitmap;
+        }
+        // Créer un Canvas à partir du bitmap (assurément mutable)
+        canvas = new Canvas(this.bitmap);
+        // Redessiner la vue
+        invalidate();
     }
 
     private void setupPaint() {
@@ -60,10 +107,12 @@ public class DrawingView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.WHITE);
-        canvas.drawBitmap(bitmap, 0, 0, null);
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, 0, 0, null);
+        }
         if (!isErasing) {
             canvas.drawPath(drawPath, drawPaint);
         }
@@ -357,7 +406,9 @@ public class DrawingView extends View {
         }
     }
 
-
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
     private void fillArea(int x, int y) {
         int targetColor = bitmap.getPixel(x, y);
@@ -378,6 +429,7 @@ public class DrawingView extends View {
 
         while (!queue.isEmpty()) {
             Point point = queue.poll();
+            assert point != null;
             int px = point.x;
             int py = point.y;
 
@@ -395,7 +447,7 @@ public class DrawingView extends View {
         invalidate();
     }
 
-    private class Point {
+    private static class Point {
         int x, y;
 
         Point(int x, int y) {
