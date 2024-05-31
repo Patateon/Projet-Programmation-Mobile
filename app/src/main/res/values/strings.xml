@@ -37,5 +37,6 @@
     <string name="se_connecter">Se connecter</string>
     <string name="cr_er_un_compte">Créer un compte</string>
     <string name="save">Save</string>
+    <string name="home">home</string>
 
 </resources>

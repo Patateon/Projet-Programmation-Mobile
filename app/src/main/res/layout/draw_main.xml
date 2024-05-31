@@ -9,6 +9,9 @@
 
 
     <!-- Bouton pour afficher les options -->
+
+    <!-- DrawingView -->
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -25,15 +28,27 @@
             android:id="@+id/toolbarImageButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
             android:adjustViewBounds="true"
             android:backgroundTint="@color/blue_button"
+            android:contentDescription="@string/home"
             android:scaleType="fitCenter"
             android:src="@drawable/home"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp" />
+            tools:layout_editor_absoluteX="257dp" />
+
+        <ImageButton
+            android:id="@+id/saveButton"
+            android:layout_width="77dp"
+            android:layout_height="61dp"
+            android:backgroundTint="@color/blue_button"
+            android:contentDescription="@string/save"
+            android:scaleType="fitCenter"
+            android:src="@drawable/save"
+            tools:layout_editor_absoluteY="0dp" />
+
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- DrawingView -->
     <com.main.projet_programmation_mobile.activity.DrawingView
         android:id="@+id/drawingView"
         android:layout_width="0dp"
@@ -183,20 +198,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.178" />
 
-    <ImageButton
-        android:id="@+id/saveButton"
-        android:layout_width="77dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="323dp"
-        android:backgroundTint="@color/blue_button"
-        android:scaleType="fitCenter"
-        android:src="@drawable/save"
-        android:contentDescription="@string/save"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar"
-        app:layout_constraintHorizontal_bias="0.272"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
