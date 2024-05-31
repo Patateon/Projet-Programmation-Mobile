@@ -1,4 +1,4 @@
-package com.main.projet_programmation_mobile.databases;
+package com.main.projet_programmation_mobile.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

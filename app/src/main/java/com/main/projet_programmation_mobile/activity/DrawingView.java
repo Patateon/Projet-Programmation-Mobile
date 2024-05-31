@@ -6,8 +6,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -16,7 +27,9 @@ public class DrawingView extends View {
     private Paint paint;
     private Canvas canvas;
     private Bitmap bitmap;
+    private Context context;
 
+    private Bitmap canvasBitmap;
     private float startX, startY, endX, endY;
     private int currentColor = Color.BLACK;
 
@@ -35,9 +48,13 @@ public class DrawingView extends View {
 
     private boolean isDrawingSegment=false;
 
+    private CollectionReference drawingsRef;
+
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         setupPaint();
+        setupFirestore();
     }
 
     private void setupPaint() {
@@ -52,6 +69,12 @@ public class DrawingView extends View {
         drawPath = new Path();
     }
 
+    private void setupFirestore(){
+        // Initialisation de la référence à la collection Firestore pour les dessins
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        drawingsRef = db.collection("canvas");
+    }
+
     @Override
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
@@ -60,7 +83,7 @@ public class DrawingView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bitmap, 0, 0, null);
@@ -357,7 +380,32 @@ public class DrawingView extends View {
         }
     }
 
+//    public void saveDrawingToFirestore(String name){
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        canvasBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//        byte[] imageData = baos.toByteArray();
+//        String imageBase64 = Base64.encodeToString(imageData, Base64.DEFAULT);
+//
+//        Map<String, Object> drawingData = new HashMap<>();
+//        drawingData.put("name", name); // Ajouter le nom du dessin à la collection
+//        drawingData.put("image", imageBase64); // Sauvegarder l'image encodée en base64
+//
+//        drawingsRef.add(drawingData)
+//                .addOnSuccessListener(documentReference -> {
+//                    // Le dessin a été enregistré avec succès dans Firestore
+//                    Toast.makeText(this.context, "Dessin sauvergardé.", Toast.LENGTH_SHORT).show();
+//                })
+//                .addOnFailureListener(e -> {
+//                    // Échec de l'enregistrement du dessin dans Firestore
+//                    Toast.makeText(this.context, "Erreur lors de la sauvegarde.", Toast.LENGTH_SHORT).show();
+//                });
+//
+//    }
 
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
     private void fillArea(int x, int y) {
         int targetColor = bitmap.getPixel(x, y);
@@ -378,6 +426,7 @@ public class DrawingView extends View {
 
         while (!queue.isEmpty()) {
             Point point = queue.poll();
+            assert point != null;
             int px = point.x;
             int py = point.y;
 
@@ -395,7 +444,7 @@ public class DrawingView extends View {
         invalidate();
     }
 
-    private class Point {
+    private static class Point {
         int x, y;
 
         Point(int x, int y) {

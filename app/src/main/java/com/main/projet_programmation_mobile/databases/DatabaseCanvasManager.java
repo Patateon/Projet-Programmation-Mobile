@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.main.projet_programmation_mobile.helper.DatabaseCanvasHelper;
+
 import java.sql.SQLDataException;
 
 public class DatabaseCanvasManager {

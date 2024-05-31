@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.main.projet_programmation_mobile.R;
 import com.main.projet_programmation_mobile.databases.DatabaseCanvasManager;
-import com.main.projet_programmation_mobile.databases.DatabaseCanvasHelper;
+import com.main.projet_programmation_mobile.helper.DatabaseCanvasHelper;
 
 import java.sql.SQLDataException;
 
