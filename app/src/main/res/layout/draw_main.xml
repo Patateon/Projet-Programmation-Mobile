@@ -11,7 +11,6 @@
 
     <!-- Bouton pour afficher les options -->
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -21,7 +20,19 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/toolbarImageButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:adjustViewBounds="true"
+            android:backgroundTint="@color/blue_button"
+            android:scaleType="fitCenter"
+            android:src="@drawable/home"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp" />
+    </androidx.appcompat.widget.Toolbar>
 
     <com.main.projet_programmation_mobile.activity.DrawingView
         android:id="@+id/drawingView"
@@ -46,7 +57,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drawingView" />
-
 
     <!-- Options Layout -->
     <LinearLayout

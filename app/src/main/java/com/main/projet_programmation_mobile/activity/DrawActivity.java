@@ -1,5 +1,6 @@
 package com.main.projet_programmation_mobile.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -157,6 +158,12 @@ public class DrawActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton homeButton = (ImageButton) findViewById(R.id.toolbarImageButton);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void openColorPickerDialog() {
@@ -183,6 +190,5 @@ public class DrawActivity extends AppCompatActivity {
         buttonTriangleShape.setSelected(drawingView.isDrawingTriangle());
         buttonSegmentShape.setSelected(drawingView.isDrawingSegment());
     }
-
 
 }
