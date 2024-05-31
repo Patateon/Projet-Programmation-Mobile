@@ -24,8 +24,17 @@
     <string name="cleanbutton">cleanButton</string>
     <string name="colorpicker">colorPicker</string>
     <string name="rubberbutton">rubberButton</string>
+
+    <string name="fillbutton">fillButton</string>
+    <string name="second_options">rightoptions</string>
+    <string name="buttonSquareShape">SquareShape</string>
+    <string name="buttonCircleShape">CircleShape</string>
+    <string name="buttonTriangleShape">TriangleShape</string>
+    <string name="buttonSegmentShape">Segment</string>
+
     <string name="identifiant">Identifiant</string>
     <string name="mot_de_passe">Mot de passe</string>
     <string name="se_connecter">Se connecter</string>
     <string name="cr_er_un_compte">Créer un compte</string>
+
 </resources>
