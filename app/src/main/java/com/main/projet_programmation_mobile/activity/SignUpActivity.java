@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -71,13 +72,20 @@ public class SignUpActivity extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                             })
-                                            .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Échec de l'inscription. Veuillez réessayer.", Toast.LENGTH_SHORT).show());
+                                            .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Mail ou mot de passe incorrect (mot de passe 6 caractères minimum)", Toast.LENGTH_SHORT).show());
                                 }
                             } else {
-                                Toast.makeText(SignUpActivity.this, "Échec de l'inscription. Veuillez réessayer.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Mail ou mot de passe incorrect (mot de passe 6 caractères minimum)", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
+        });
+
+        // bouton home
+        ImageButton homeButton = (ImageButton) findViewById(R.id.home_button);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
         });
     }
 }

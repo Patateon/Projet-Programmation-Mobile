@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Base64;
@@ -121,13 +123,20 @@ public class DrawActivity extends AppCompatActivity {
         toolbarSecondOptions = findViewById(R.id.toolbarSecondOptions);
         buttonSecondOptions = findViewById(R.id.buttonSecondOptions);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        boolean isPremium = sharedPreferences.getBoolean("is_premium", false);
+
         buttonSecondOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
-                    toolbarSecondOptions.setVisibility(View.INVISIBLE);
-                } else {
-                    toolbarSecondOptions.setVisibility(View.VISIBLE);
+                if(!isPremium){
+                    Toast.makeText(DrawActivity.this, "Vous n'etes pas membre premium", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (toolbarSecondOptions.getVisibility() == View.VISIBLE) {
+                        toolbarSecondOptions.setVisibility(View.INVISIBLE);
+                    } else {
+                        toolbarSecondOptions.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -185,6 +194,12 @@ public class DrawActivity extends AppCompatActivity {
             Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             drawingView.setBitmap(decodedBitmap);
         }
+      
+        ImageButton homeButton = (ImageButton) findViewById(R.id.toolbarImageButton);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void openColorPickerDialog() {
