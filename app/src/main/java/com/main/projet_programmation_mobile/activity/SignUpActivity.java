@@ -72,10 +72,10 @@ public class SignUpActivity extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                             })
-                                            .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Échec de l'inscription. Veuillez réessayer.", Toast.LENGTH_SHORT).show());
+                                            .addOnFailureListener(e -> Toast.makeText(SignUpActivity.this, "Mail ou mot de passe incorrect (mot de passe 6 caractères minimum)", Toast.LENGTH_SHORT).show());
                                 }
                             } else {
-                                Toast.makeText(SignUpActivity.this, "Échec de l'inscription. Veuillez réessayer.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignUpActivity.this, "Mail ou mot de passe incorrect (mot de passe 6 caractères minimum)", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
