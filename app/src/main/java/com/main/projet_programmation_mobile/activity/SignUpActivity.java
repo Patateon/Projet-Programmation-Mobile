@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -78,6 +79,13 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
             }
+        });
+
+        // bouton home
+        ImageButton homeButton = (ImageButton) findViewById(R.id.home_button);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            startActivity(intent);
         });
     }
 }
